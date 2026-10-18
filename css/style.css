@@ -48,6 +48,7 @@ body {
   background-color: var(--putih);
   line-height: 1.75;
   overflow-x: hidden;
+  overflow-wrap: break-word;   /* supaya tautan/URL panjang tidak meluber */
 }
 
 a {
@@ -58,6 +59,11 @@ a {
 img {
   max-width: 100%;
   height: auto;
+}
+
+/* Semua gambar & media ikut melebar, tidak pernah melebihi wadahnya */
+img, svg, video, canvas, iframe {
+  max-width: 100%;
 }
 
 /* Warna teks bantuan */
@@ -189,14 +195,14 @@ img {
 
 .kotak-statistik .angka {
   display: block;
-  font-size: 1.7rem;
+  font-size: clamp(1.35rem, 4vw, 1.7rem);
   font-weight: 800;
   color: var(--putih);
   line-height: 1.2;
 }
 
 .kotak-statistik .keterangan {
-  font-size: .8rem;
+  font-size: clamp(.72rem, 2.4vw, .8rem);
   color: rgba(255, 255, 255, .75);
 }
 
@@ -650,9 +656,9 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 130px;
+  height: clamp(108px, 16vw, 130px);
   color: var(--putih);
-  font-size: 2.6rem;
+  font-size: clamp(2rem, 6vw, 2.6rem);
   background: linear-gradient(135deg, var(--hitam), var(--merah-gelap));
 }
 
@@ -888,9 +894,36 @@ img {
 
 
 /* --------------------------------------------------------------------------
-   19. PENGATURAN LAYAR KECIL (HP & TABLET)
+   19. RESPONSIF: MENYESUAIKAN TAMPILAN DI BERBAGAI UKURAN LAYAR
+   Memakai breakpoint standar Bootstrap 5 (576 / 768 / 992 / 1200 / 1400),
+   supaya tampilan tetap nyaman dari HP kecil sampai monitor besar.
    -------------------------------------------------------------------------- */
+
+/* --- Monitor besar (>= 1400px) --- */
+@media (min-width: 1400px) {
+  .hero { padding: 8rem 0 6.5rem; }
+  .bagian { padding: 5.5rem 0; }
+  .banner-halaman { padding: 6rem 0 4.2rem; }
+  .kartu { padding: 1.9rem; }
+  .kotak-ajakan { padding: 3.4rem 2.4rem; }
+}
+
+/* --- Laptop besar (1200px - 1399px) --- */
+@media (max-width: 1399.98px) {
+  .hero { padding: 7rem 0 5rem; }
+  .banner-halaman { padding: 5.2rem 0 3.6rem; }
+}
+
+/* --- Laptop kecil & tablet lanskap (< 1200px) --- */
+@media (max-width: 1199.98px) {
+  .avatar-oshi { width: 80px; height: 80px; font-size: 1.5rem; }
+  .kotak-ajakan { padding: 2.8rem 1.8rem; }
+}
+
+/* --- Tablet (< 992px): menu otomatis turun ke baris baru --- */
 @media (max-width: 991.98px) {
+  html { scroll-padding-top: 130px; }
+
   .jkt-navbar .nav-menu {
     justify-content: flex-start;
     margin-top: .6rem;
@@ -899,14 +932,48 @@ img {
 
   .hero { padding: 4.5rem 0 3.5rem; }
   .bagian { padding: 3.2rem 0; }
-  .kotak-ajakan { padding: 2.2rem 1.2rem; }
+  .judul-bagian { margin-bottom: 2.2rem; }
+  .banner-halaman { padding: 4.2rem 0 3rem; }
+  .kotak-ajakan { padding: 2.2rem 1.4rem; }
 }
 
+/* --- Ponsel lanskap & tablet kecil (< 768px) --- */
+@media (max-width: 767.98px) {
+  .bagian { padding: 2.8rem 0; }
+  .kartu { padding: 1.35rem; }
+  .banner-halaman { padding: 3.6rem 0 2.6rem; }
+  .banner-halaman h1 { font-size: 1.8rem; }
+
+  .timeline { padding-left: 1.6rem; }
+  .timeline-item { padding-bottom: 1.9rem; }
+  .timeline-item::before { left: -2.22rem; }
+
+  /* Tabel dibuat lebih ringkas (sudah dibungkus .table-responsive Bootstrap) */
+  .tabel-rapi { font-size: .86rem; }
+  .tabel-rapi thead th,
+  .tabel-rapi tbody td { padding: .65rem .7rem; }
+
+  .footer .sosial-footer { flex-wrap: wrap; }
+}
+
+/* --- Ponsel (< 576px) --- */
 @media (max-width: 575.98px) {
+  html { scroll-padding-top: 145px; }
+
+  .jkt-navbar .brand-badge { width: 38px; height: 38px; font-size: .85rem; }
   .jkt-navbar .nav-menu .nav-link {
     font-size: .84rem;
     padding: .35rem .6rem;
   }
+
+  .hero { padding: 3.6rem 0 3rem; }
+  .hero .lead { font-size: .96rem; }
+  .kotak-statistik { padding: .9rem .4rem; }
+
+  .avatar-oshi { width: 70px; height: 70px; font-size: 1.3rem; }
+  .ikon-bulat { width: 46px; height: 46px; font-size: 1.2rem; }
+  .kartu-oshi { padding: 1.15rem .9rem; }
+  .ucapan-oshi { font-size: .82rem; }
 
   .baris-biodata {
     flex-direction: column;
@@ -917,4 +984,40 @@ img {
 
   .timeline { padding-left: 1.4rem; }
   .timeline-item::before { left: -2.02rem; }
+
+  .kotak-ajakan { padding: 1.8rem 1rem; }
+
+  /* Tombol jadi selebar kartu supaya mudah disentuh */
+  .tombol { width: 100%; justify-content: center; }
+
+  .tombol-atas { right: .8rem; bottom: .8rem; width: 42px; height: 42px; }
+}
+
+/* --- Ponsel sangat kecil (< 400px, misal layar 320-390px) --- */
+@media (max-width: 399.98px) {
+  html { font-size: 15px; }
+
+  .hero { padding: 3rem 0 2.4rem; }
+  .hero h1 { font-size: 1.75rem; }
+  .bagian { padding: 2.3rem 0; }
+  .banner-halaman { padding: 3rem 0 2.2rem; }
+  .banner-halaman h1 { font-size: 1.5rem; }
+
+  .jkt-navbar .nav-menu .nav-link {
+    font-size: .78rem;
+    padding: .3rem .5rem;
+  }
+
+  .avatar-oshi { width: 62px; height: 62px; font-size: 1.15rem; }
+  .kartu-oshi h3 { font-size: .95rem; }
+  .tim-oshi { font-size: .68rem; }
+
+  .judul-bagian h2 { font-size: 1.4rem; }
+  .kotak-ajakan h2 { font-size: 1.35rem; }
+}
+
+/* --- Hormati pengguna yang mematikan animasi --- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
 }
